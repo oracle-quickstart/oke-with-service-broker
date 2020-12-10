@@ -1,0 +1,10 @@
+.terraform
+k8s/secrets
+TF_VARS.sh
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+*.pem
+*.p12
+oci-service-broker/**
+config/**

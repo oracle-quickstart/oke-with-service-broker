@@ -2,12 +2,19 @@
 
 resource "null_resource" "cluster_kube_config" {
 
+    depends_on = [module.node_pools, module.cluster]
+
     provisioner "local-exec" {
         command = templatefile("./templates/cluster-kube-config.tpl",
             {
                 cluster_id = module.cluster.cluster.id
                 region = var.region
             })
+    }
+    provisioner "local-exec" {
+        when = destroy
+        command = "kubectl delete all --all"
+        on_failure = continue
     }
 }
 
@@ -23,7 +30,8 @@ resource "null_resource" "oke_admin_service_account" {
     }
     provisioner "local-exec" {
         when = destroy
-        command = "kubectl delete ServiceAccount oke-admin"
+        command = "kubectl delete ServiceAccount oke-admin -n kube-system"
+        on_failure = continue
     }
 }
 
@@ -39,6 +47,7 @@ resource "null_resource" "create_namespace" {
     provisioner "local-exec" {
         when = destroy
         command = "kubectl delete namespace oci-service-broker"
+        on_failure = continue
     }
 }
 
@@ -52,14 +61,14 @@ resource "null_resource" "docker_registry" {
         command = templatefile("./templates/docker-registry-secret.tpl",
             {
                 region = var.region
-                tenancy_name = data.oci_identity_tenancy.tenancy.name
-                ocir_username = module.ocir_user.ocir_credentials.username
-                ocir_token = module.ocir_user.ocir_credentials.token
+                ocir_username = module.ocir_user.ocir_puller_credentials.username
+                ocir_token = module.ocir_user.ocir_puller_credentials.token
             })
     }
     provisioner "local-exec" {
         when = destroy
         command = "kubectl delete secret ocir-secret"
+        on_failure = continue
     }
 
 }
@@ -76,6 +85,7 @@ resource "null_resource" "osb_credentials" {
     provisioner "local-exec" {
         when = destroy
         command = "kubectl delete secret osb-credentials --namespace oci-service-broker"
+        on_failure = continue
     }
 }
 
@@ -91,6 +101,7 @@ resource "null_resource" "deploy_service_catalog" {
     provisioner "local-exec" {
         when = destroy
         command = "helm delete catalog --namespace oci-service-broker"
+        on_failure = continue
     }
 }
 
@@ -108,6 +119,7 @@ resource "null_resource" "deploy_oci_service_broker" {
     provisioner "local-exec" {
         when = destroy
         command = "helm delete oci-service-broker --namespace oci-service-broker"
+        on_failure = continue
     }
 }
 
@@ -123,5 +135,6 @@ resource "null_resource" "register_service_broker" {
     provisioner "local-exec" {
         when = destroy
         command = "kubectl delete ClusterServiceBroker oci-service-broker"
+        on_failure = continue
     }
 }

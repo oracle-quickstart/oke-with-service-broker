@@ -45,6 +45,10 @@ resource "oci_containerengine_node_pool" "node_pool" {
   }
   ssh_public_key = var.ssh_authorized_key
 
+  provisioner "local-exec" {
+    command = "sleep 5"
+    when = destroy
+  }
 }
 
 

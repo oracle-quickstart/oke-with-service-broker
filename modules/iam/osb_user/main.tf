@@ -20,6 +20,7 @@ resource "oci_identity_user_group_membership" "osb_group_membership" {
 }
 
 resource "oci_identity_policy" "osb_user_policy" {
+    depends_on = [oci_identity_group.osb_users_group]
     #Required
     compartment_id = var.tenancy_ocid
     description = "OCI Service broker user policy"

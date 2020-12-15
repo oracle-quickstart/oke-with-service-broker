@@ -1,8 +1,8 @@
 .terraform
-k8s/secrets
-TF_VARS.sh
 terraform.tfstate
 terraform.tfstate.backup
+k8s/secrets
+TF_VARS.sh
 *.tfvars
 *.pem
 *.p12

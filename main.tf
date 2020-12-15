@@ -10,9 +10,11 @@ module "vcn" {
 
 module "cluster" {
   source              = "./modules/k8s"
+  cluster_name = local.cluster_name
+  tenancy_ocid = var.tenancy_ocid
   compartment_ocid    = var.compartment_ocid
   vcn_id                 = module.vcn.vcn_id
-  cluster_lb_subnet_id      = module.vcn.cluster_lb_subnet_id
+  cluster_lb_subnet_ids      = [module.vcn.cluster_lb_subnet_id]
   secrets_encryption_key_ocid = var.secrets_encryption_key_ocid
 } 
 
@@ -38,4 +40,21 @@ module "osb_user" {
   compartment_ocid = var.compartment_ocid
   cluster_id = module.cluster.cluster.id
   region = var.region
+}
+
+
+# module "encryption" {
+#   source = "./modules/iam/cluster_encryption"
+#   tenancy_ocid = var.tenancy_ocid
+#   compartment_ocid = var.compartment_ocid
+#   secrets_encryption_key_ocid = var.secrets_encryption_key_ocid
+# }
+
+
+
+module "logging" {
+  source = "./modules/logging"
+  tenancy_ocid = var.tenancy_ocid
+  compartment_ocid = var.compartment_ocid
+  cluster_id = module.cluster.cluster.id
 }

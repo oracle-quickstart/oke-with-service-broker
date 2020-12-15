@@ -97,6 +97,12 @@ resource "oci_core_security_list" "node_sl" {
     stateless = true
   }
 
+  egress_security_rules {
+    protocol  = "all"
+    destination    = cidrsubnet(var.vcn_cidr, 8, 30)
+    stateless = true
+  }
+
   # egress_security_rules {
   #   protocol    = "6"
   #   destination = var.vcn_cidr
@@ -140,6 +146,12 @@ resource "oci_core_security_list" "node_sl" {
   ingress_security_rules {
     protocol  = "all"
     source    = cidrsubnet(var.vcn_cidr, 8, 20)
+    stateless = true
+  }
+
+  ingress_security_rules {
+    protocol  = "all"
+    source    = cidrsubnet(var.vcn_cidr, 8, 30)
     stateless = true
   }
 
@@ -271,7 +283,7 @@ resource "oci_core_security_list" "node_sl" {
 # Create regional subnets in vcn
 
 resource "oci_core_subnet" "cluster_lb_subnet" {
-  cidr_block        = cidrsubnet(var.vcn_cidr, 8, 10)
+  cidr_block        = cidrsubnet(var.vcn_cidr, 8, 20)
   display_name      = "lb-public-subnet"
   compartment_id    = var.compartment_ocid
   vcn_id            = oci_core_virtual_network.vcn.id
@@ -283,10 +295,14 @@ resource "oci_core_subnet" "cluster_lb_subnet" {
   provisioner "local-exec" {
     command = "sleep 5"
   }
+  provisioner "local-exec" {
+    when = destroy
+    command = "sleep 60"
+  }
 }
 
 resource "oci_core_subnet" "cluster_nodes_subnet" {
-  cidr_block                 = cidrsubnet(var.vcn_cidr, 8, 20)
+  cidr_block                 = cidrsubnet(var.vcn_cidr, 8, 10)
   display_name               = "nodes-private-subnet"
   compartment_id             = var.compartment_ocid
   vcn_id                     = oci_core_virtual_network.vcn.id
@@ -295,7 +311,12 @@ resource "oci_core_subnet" "cluster_nodes_subnet" {
   security_list_ids          = [oci_core_security_list.node_sl.id]
   prohibit_public_ip_on_vnic = true
   dns_label                  = "nodes"
+
   provisioner "local-exec" {
     command = "sleep 5"
+  }
+  provisioner "local-exec" {
+    when = destroy
+    command = "sleep 60"
   }
 }

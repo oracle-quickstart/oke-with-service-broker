@@ -28,30 +28,6 @@ module "node_pools" {
   nodes_subnet_id = module.vcn.cluster_nodes_subnet_id
 }
 
-module "ocir_user" {
-  source = "./modules/iam/ocir_user"
-  tenancy_ocid = var.tenancy_ocid
-  cluster_id = module.cluster.cluster.id
-}
-
-module "osb_user" {
-  source = "./modules/iam/osb_user"
-  tenancy_ocid = var.tenancy_ocid
-  compartment_ocid = var.compartment_ocid
-  cluster_id = module.cluster.cluster.id
-  region = var.region
-}
-
-
-# module "encryption" {
-#   source = "./modules/iam/cluster_encryption"
-#   tenancy_ocid = var.tenancy_ocid
-#   compartment_ocid = var.compartment_ocid
-#   secrets_encryption_key_ocid = var.secrets_encryption_key_ocid
-# }
-
-
-
 module "logging" {
   source = "./modules/logging"
   tenancy_ocid = var.tenancy_ocid

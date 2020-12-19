@@ -34,19 +34,19 @@ resource "oci_logging_log" "oke_log" {
     log_type = "CUSTOM"
 
     #Optional
-    configuration {
-        #Required
-        source {
-            #Required
-            category = "DYNAMIC_GROUP"
-            resource = oci_identity_dynamic_group.instances_dynamic_group.id
-            service = "OCISERVICE"
-            source_type = "OCISERVICE"
-        }
+    # configuration {
+    #     #Required
+    #     source {
+    #         #Required
+    #         category = "DYNAMIC_GROUP"
+    #         resource = oci_identity_dynamic_group.instances_dynamic_group.id
+    #         service = "OCISERVICE"
+    #         source_type = "OCISERVICE"
+    #     }
 
-        #Optional
-        compartment_id = var.compartment_ocid
-    }
+    #     #Optional
+    #     compartment_id = var.compartment_ocid
+    # }
     # defined_tags = {"Operations.CostCenter"= "42"}
     # freeform_tags = {"Department"= "Finance"}
     is_enabled = true

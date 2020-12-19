@@ -1,6 +1,10 @@
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
-# kubectl apply -f ./templates/etcd-tls-certificates.yaml -n oci-service-broker
+# check that the nodes are ready, and we have 3, or PVCs may fail to provision
+
+while [[ $(for i in $(kubectl get nodes -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}'); do if [[ "$i" == "True" ]]; then echo $i; fi; done | wc -l | tr -d " ") -lt 3 ]]; do
+    echo "waiting for at least 3 nodes to be ready..." && sleep 1;
+done
 
 helm install etcd bitnami/etcd --namespace oci-service-broker --values ./templates/etcd-values.yaml
 

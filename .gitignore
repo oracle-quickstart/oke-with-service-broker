@@ -8,3 +8,9 @@ TF_VARS.sh
 *.p12
 oci-service-broker/**
 config/**
+keys/*.crt
+keys/*.pem
+keys/*.csr
+keys/**/*.crt
+keys/**/*.key
+keys/osb/ssl.conf

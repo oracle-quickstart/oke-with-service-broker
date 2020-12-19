@@ -51,27 +51,43 @@ resource "null_resource" "create_namespace" {
     }
 }
 
-# Deploy cert-manager
+# # Deploy cert-manager
 
-resource "null_resource" "deploy_cert_manager" {
+# resource "null_resource" "deploy_cert_manager" {
+
+#     depends_on = [null_resource.cluster_kube_config]
+
+#     provisioner "local-exec" {
+#         command = "kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.yaml"
+#     }
+#     provisioner "local-exec" {
+#         when = destroy
+#         command = "kubectl delete -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.yaml"
+#         on_failure = continue
+#     }
+# }
+
+# Generate certificates for etcd TLS
+
+resource "null_resource" "gen_etcd_certs" {
 
     depends_on = [null_resource.cluster_kube_config]
 
     provisioner "local-exec" {
-        command = "kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.yaml"
+        command = templatefile("./templates/etcd-tls-secrets.tpl", {})
     }
     provisioner "local-exec" {
         when = destroy
-        command = "kubectl delete -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.yaml"
+        command = "kubectl delete secret etcd-peer-tls-etcd -n oci-service-broker"
         on_failure = continue
     }
 }
 
-# Create the OCIR user secret to use to push/pull docker images
+# Deploy ETCD with TLS
 
 resource "null_resource" "deploy_etcd" {
 
-    depends_on = [null_resource.deploy_cert_manager]
+    depends_on = [null_resource.gen_etcd_certs]
 
     provisioner "local-exec" {
         command = templatefile("./templates/deploy-etcd.tpl",
@@ -83,7 +99,7 @@ resource "null_resource" "deploy_etcd" {
     }
     provisioner "local-exec" {
         when = destroy
-        command = "kubectl delete secret ocir-secret"
+        command = "helm delete etcd -n oci-service-broker"
         on_failure = continue
     }
 

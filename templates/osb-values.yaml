@@ -11,10 +11,8 @@ replicaCount: 1
 # Image of the broker
 image:
   # Repository of the image
-  repository: us-ashburn-1.ocir.io/ocisateam/oci-service-broker/oci-service-broker
-  #iad.ocir.io/oracle/oci-service-broker
-    #us-ashburn-1.ocir.io/ocisateam/oci-service-broker/oci-service-broker
-  # iad.ocir.io/oracle/oci-service-broker
+  # repository: us-ashburn-1.ocir.io/ocisateam/oci-service-broker/oci-service-broker
+  repository: iad.ocir.io/oracle/oci-service-broker
 
   # Tag of the image
   tag:  1.5.1
@@ -64,7 +62,6 @@ storage:
       # etcd-client.key - SSL key file used to secure etcd communication.
       # clientCertSecretName: etcd-tls-secret
       clientCertSecretName: etcd-client-tls-cert
-      # clientCertSecretName: etcd-client-tls-cert2
 
 # Any key value pair under the serviceTags section will be added as tags in the 
 serviceTags:

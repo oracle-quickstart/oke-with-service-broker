@@ -9,4 +9,4 @@ metadata:
 spec:
   # Make sure to replace <NAMESPACE_OF_OCI_SERVICE_BROKER> with suitable namespace if OCI Service Broker and Service Catalog are installed in different namespaces.
   # Please remove <NAMESPACE_OF_OCI_SERVICE_BROKER> from below URL attribute If both OCI Service Broker and Service Catalog are installed in the same namespace.
-  url: https://oci-service-broker.oci-service-broker.svc.cluster.local:8080
+  url: http://oci-service-broker.oci-service-broker.svc.cluster.local:8080

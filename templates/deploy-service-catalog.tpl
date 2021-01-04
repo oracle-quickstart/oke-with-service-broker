@@ -1,6 +1,6 @@
-helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
+helm repo add service-catalog https://kubernetes-sigs.github.io/service-catalog
 
-helm install catalog svc-cat/catalog --namespace oci-service-broker
+helm install catalog service-catalog/catalog --namespace oci-service-broker
 
 while [[ $(kubectl get pods -l app=catalog-catalog-webhook -n oci-service-broker -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do 
     echo "waiting for catalog-catalog-webhook pod" && sleep 1; 

@@ -2,17 +2,32 @@ cd keys
 mkdir -p client peer
 # create CA if it doesn't exist
 if [[ ! -f ca.pem ]]; then
-    cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
+    # gen Root CA key
+    openssl genrsa -out ca-key.pem 2048
+    # gen Root CA Certificate
+    openssl req -x509 -config ca.conf -new -nodes -key ca-key.pem -days 3650 -out ca.pem
 fi
 
-# gen peer certificate and key
-cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=peer peer.json | cfssljson -bare peer
+## gen peer certificate and key
+# gen peer key
+openssl genrsa -out peer-key.pem 2048
+# gen peer csr
+openssl req -new -key peer-key.pem -out peer.csr -config peer.conf
+# gen peer cert by signing csr with CA
+openssl x509 -req -in peer.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out peer.pem -days 3650 -extensions v3_req -extfile peer.conf
+# copy files over to the peer folder with the proper names for the secret
 cp ca.pem peer/ca.crt
 cp peer.pem peer/tls.crt
 cp peer-key.pem peer/tls.key
 
-# gen client certificate and key for etcd
-cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client.json | cfssljson -bare client
+## gen client certificate and key for etcd
+# gen client key
+openssl genrsa -out client-key.pem 2048
+# gen client csr
+openssl req -new -key client-key.pem -out client.csr -config client.conf
+# gen client cert by signing csr with CA
+openssl x509 -req -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out client.pem -days 3650 -extensions v3_req -extfile client.conf
+# copy files over to the peer folder with the proper names for the secret
 cp ca.pem client/ca.crt
 cp client.pem client/tls.crt
 cp client-key.pem client/tls.key
@@ -48,4 +63,7 @@ while [[ "$(kubectl get secrets -n oci-service-broker | grep "etcd-client-tls-ce
 done
 while [[ "$(kubectl get secrets -n oci-service-broker | grep "etcd-peer-tls-cert" | wc -l | tr -d ' ')" == "0" ]]; do
     echo "waiting for etcd-peer-tls-cert secret to be created" && sleep 1
+done
+while [[ "$(kubectl get secrets -n oci-service-broker | grep "etcd-client-tls-cert-osb" | wc -l | tr -d ' ')" == "0" ]]; do
+    echo "waiting for etcd-client-tls-cert-osb secret to be created" && sleep 1
 done

@@ -20,7 +20,7 @@ basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 EOF
 
-openssl req -newkey rsa:2048 -config ssl.conf -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+openssl req -newkey rsa:2048 -config ssl.conf -nodes -keyout key.pem -x509 -days 3650 -out certificate.pem
 # package in PKCS12 keystore
 openssl pkcs12 -inkey key.pem -in certificate.pem -export -out certificate.p12 -passout pass:${password}
 

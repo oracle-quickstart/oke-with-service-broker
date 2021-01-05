@@ -1,6 +1,7 @@
+CHART_VERSION=1.5.2
+# if editing the CHART_VERSION also make sure to edit the image tag in the osb-values.yaml to match the image version
 
-
-helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v1.5.1/oci-service-broker-1.5.1.tgz \
+helm install oci-service-broker https://github.com/oracle/oci-service-broker/releases/download/v$CHART_VERSION/oci-service-broker-$CHART_VERSION.tgz \
   --namespace oci-service-broker \
   --values ./templates/osb-values.yaml
 

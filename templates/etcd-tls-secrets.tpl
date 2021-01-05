@@ -11,7 +11,13 @@ cp ca.pem peer/ca.crt
 cp peer.pem peer/tls.crt
 cp peer-key.pem peer/tls.key
 
+# gen client certificate and key for etcd
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=client client.json | cfssljson -bare client
+cp ca.pem client/ca.crt
+cp client.pem client/tls.crt
+cp client-key.pem client/tls.key
+
+# convert cert and key for OSB
 openssl pkcs8 -topk8 -nocrypt -in client-key.pem -out client/etcd-client.key
 cp ca.pem client/etcd-client-ca.crt
 cp client.pem client/etcd-client.crt
@@ -24,7 +30,14 @@ kubectl create secret generic etcd-peer-tls-cert -n oci-service-broker \
 popd
 
 pushd client
-kubectl create secret generic etcd-client-tls-cert  -n oci-service-broker \
+# cert for etcd
+kubectl create secret generic etcd-client-tls-cert -n oci-service-broker \
+--from-file=ca.crt \
+--from-file=tls.key \
+--from-file=tls.crt
+
+# modified cert for OSB
+kubectl create secret generic etcd-client-tls-cert-osb  -n oci-service-broker \
 --from-file=etcd-client-ca.crt \
 --from-file=etcd-client.key \
 --from-file=etcd-client.crt

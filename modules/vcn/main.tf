@@ -317,6 +317,6 @@ resource "oci_core_subnet" "cluster_nodes_subnet" {
   }
   provisioner "local-exec" {
     when = destroy
-    command = "sleep 90"
+    command = "sleep 180"
   }
 }

@@ -78,7 +78,7 @@ resource "null_resource" "gen_etcd_certs" {
     }
     provisioner "local-exec" {
         when = destroy
-        command = "kubectl delete secret etcd-peer-tls-etcd -n oci-service-broker"
+        command = "kubectl delete secret etcd-peer-tls-cert etcd-client-tls-cert etcd-client-tls-cert-osb -n oci-service-broker"
         on_failure = continue
     }
 }
@@ -99,7 +99,7 @@ resource "null_resource" "deploy_etcd" {
     }
     provisioner "local-exec" {
         when = destroy
-        command = "helm delete etcd -n oci-service-broker"
+        command = "helm delete etcd -n oci-service-broker && kubectl delete pvc data-etcd-0 data-etcd-1 data-etcd-2 -n oci-service-broker"
         on_failure = continue
     }
 
@@ -199,7 +199,7 @@ resource "null_resource" "register_service_broker" {
 
 resource "null_resource" "ci_user_bind_cluster_admin_role" {
 
-    depends_on = [null_resource.deploy_oci_service_broker, null_resource.deploy_service_catalog]
+    depends_on = [null_resource.cluster_kube_config]
 
     provisioner "local-exec" {
         command = "kubectl create clusterrolebinding ci-user-cluster-role --clusterrole=cluster-admin --user=${module.ci_user.credentials.user_ocid}"

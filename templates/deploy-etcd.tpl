@@ -1,12 +1,14 @@
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
+CHART_VERSION=5.4.2
+
 # check that the nodes are ready, and we have 3, or PVCs may fail to provision
 
 while [[ $(for i in $(kubectl get nodes -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}'); do if [[ "$i" == "True" ]]; then echo $i; fi; done | wc -l | tr -d " ") -lt 3 ]]; do
     echo "waiting for at least 3 nodes to be ready..." && sleep 1;
 done
 
-helm install etcd bitnami/etcd --namespace oci-service-broker --values ./templates/etcd-values.yaml
+helm install etcd bitnami/etcd --version $CHART_VERSION --namespace oci-service-broker --values ./templates/etcd-values.yaml
 
 while [[ $(kubectl get pod etcd-0 -n oci-service-broker -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do 
     echo "waiting for pod etcd-0" && sleep 1; 

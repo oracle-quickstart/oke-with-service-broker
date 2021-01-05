@@ -14,3 +14,4 @@ keys/*.csr
 keys/**/*.crt
 keys/**/*.key
 keys/osb/ssl.conf
+ca.srl

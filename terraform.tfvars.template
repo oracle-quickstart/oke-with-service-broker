@@ -1,0 +1,30 @@
+tenancy_ocid = "ocid1.tenancy.oc1.."
+compartment_ocid = "ocid1.compartment.oc1.."
+region           = "us-ashburn-1"
+
+vcn_cidr = "10.0.0.0/16"
+
+ssh_authorized_key = ""
+
+oke_cluster = {
+  name                                                    = "OKE_Cluster"
+  k8s_version                                             = "v1.18.10"
+  pods_cidr                                               = "10.1.0.0/16"
+  services_cidr                                           = "10.2.0.0/16"
+  cluster_options_add_ons_is_kubernetes_dashboard_enabled = true
+  cluster_options_add_ons_is_tiller_enabled               = true
+}
+
+node_pools = [
+  {
+    pool_name  = "pool1"
+    node_shape = "VM.Standard2.1"
+    node_count = 3
+    node_labels = {
+      "pool_name" = "pool1"
+    }
+  }
+]
+
+# Optional parameter
+secrets_encryption_key_ocid = null

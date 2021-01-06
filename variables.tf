@@ -29,7 +29,7 @@ variable "node_pools" {
     {
       pool_name  = "pool1"
       node_shape = "VM.Standard2.1"
-      node_count = 2
+      node_count = 3
       node_labels = {
         "pool_name" = "pool1"
       }

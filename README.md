@@ -23,20 +23,20 @@ and [setup guide](https://www.terraform.io/docs/providers/oci/guides/version-3-u
 
 This terraform deployment requires the prior installation of the following:
 
-- terraform >= 0.13
+- **terraform >= 0.13**
 
     [tfswitch](https://tfswitch.warrensbox.com/Install/) can be used for flexibility of working with multiple versions of terraform, but it is only available on Linux and Mac OS X, for Windows or if you prefer to install the base software, see [https://learn.hashicorp.com/tutorials/terraform/install-cli](https://learn.hashicorp.com/tutorials/terraform/install-cli) for basic installation instructions. 
 
-- kubectl >= 0.18 (the Kubernetes cli)
+- **kubectl >= 0.18 (the Kubernetes cli)**
 
     See [https://kubernetes.io/docs/tasks/tools/install-kubectl/](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for installation instructions, although kubectl is usually installed as part of Docker Desktop, so if you use Docker it is likely already installed
 
-- helm 3.x
+- **helm 3.x**
 
     Helm is a kubernetes deployment package manager. The OCI Service Broker is packaged in a Helm chart, and so is the etcd cluster deployment.
     See [https://helm.sh/docs/intro/install/](https://helm.sh/docs/intro/install/) to install helm locally.
 
-- OCI CLI
+- **OCI CLI**
 
     See [https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm) for a quick starting guide. Make sure you upload your **public key** in your OCI account and note the fingerprint information.
     
@@ -110,15 +110,17 @@ The deployment creates:
 
 - An Oracle Kubernetes Engine (OKE) cluster, and generates credentials to access it, which are automatically merged with your local `kubeconfig` for use without other setup
 
-- A group and a user with policy allowing the user to pull container images in the compartment. The credentials for this user are stored in a secret of type `docker-registry` named `ocir-secret` in the `default` namespace, which can be used for deployments needing to pull images from the OCI Registry in your tenancy.
+- A `ocir_puller` group and a user with policy allowing the user to pull container images in the compartment. The credentials for this user are stored in a secret of type `docker-registry` named `ocir-secret` in the `default` namespace, which can be used for deployments needing to pull images from the OCI Registry in your tenancy.
 
-  Note that if you need to pull images for a deployment in a different namespace, you will need to copy the secret to the other namespace.
+  *Note that if you need to pull images for a deployment in a different namespace, you will need to copy the secret to the other namespace.*
 
-- A group and a user with policy allowing the user to create and publish container images in the tenancy. The credentials for this user are listed in the output of the terraform script as `docker_login_for_CI`, and can be used for development or in CI/CD pipelines to create container images.
+- A `ocir_pusher` group and a user with policy allowing the user to create and publish container images in the tenancy. The credentials for this user are listed in the output of the terraform script as `docker_login_for_CI`, and can be used for development or in CI/CD pipelines to create container images.
 
-- A group and a user with policy allowing the user to manage kubernetes clusters in the tenancy, along with a private key whose public key has been uploaded for this user. The OCI credentials for this user (including the key path, fingerprint and user id) are listed in the output of the terraform script as `CI_user_credentials`, and can be used to use the OCI CLI in a CD pipeline.
+- A `cluster_admin` group and a user with policy allowing the user to manage kubernetes clusters in the tenancy, along with a private key whose public key has been uploaded for this user. The OCI credentials for this user (including the key path, fingerprint and user id) are listed in the output of the terraform script as `CI_user_credentials`, and can be used to use the OCI CLI in a CD pipeline.
 
 - A `kubeconfig` output which, along with the `CI_user_credentials` can be used in CI/CD to deploy kubernetes manifests.
+
+- In addition, it creates a `osb_user` group and user with policy allowing management of Autonmous DBs, Streaming and Object Storage resources, whose OCI credentials are stored in a secret called `osbcredentials`, as required by the OCI Service Broker to interact with the OCI services.
 
 It also creates, under the `keys` folder:
 

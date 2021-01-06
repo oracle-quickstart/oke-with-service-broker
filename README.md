@@ -25,7 +25,7 @@ This terraform deployment requires the prior installation of the following:
 
 - terraform >= 0.13
 
-    See [https://learn.hashicorp.com/tutorials/terraform/install-cli](https://learn.hashicorp.com/tutorials/terraform/install-cli) for basic installation, although we recommend using [tfswitch](https://tfswitch.warrensbox.com/Install/) for flexibility of working with multiple versions of terraform
+    [tfswitch](https://tfswitch.warrensbox.com/Install/) can be used for flexibility of working with multiple versions of terraform, but it is only available on Linux and Mac OS X, for Windows or if you prefer to install the base software, see [https://learn.hashicorp.com/tutorials/terraform/install-cli](https://learn.hashicorp.com/tutorials/terraform/install-cli) for basic installation instructions. 
 
 - kubectl >= 0.18 (the Kubernetes cli)
 

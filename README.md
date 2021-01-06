@@ -23,22 +23,26 @@ and [setup guide](https://www.terraform.io/docs/providers/oci/guides/version-3-u
 
 This terraform deployment requires the prior installation of the following:
 
-- terraform >= 0.13:
+- terraform >= 0.13
+
     See [https://learn.hashicorp.com/tutorials/terraform/install-cli](https://learn.hashicorp.com/tutorials/terraform/install-cli) for basic installation, although we recommend using [tfswitch](https://tfswitch.warrensbox.com/Install/) for flexibility of working with multiple versions of terraform
 
-- kubectl >= 0.18 (the Kubernetes cli):
+- kubectl >= 0.18 (the Kubernetes cli)
+
     See [https://kubernetes.io/docs/tasks/tools/install-kubectl/](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for installation instructions, although kubectl is usually installed as part of Docker Desktop, so if you use Docker it is likely already installed
 
-- helm 3:
+- helm 3.x
+
     Helm is a kubernetes deployment package manager. The OCI Service Broker is packaged in a Helm chart, and so is the etcd cluster deployment.
     See [https://helm.sh/docs/intro/install/](https://helm.sh/docs/intro/install/) to install helm locally.
 
 - OCI CLI
+
     See [https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm) for a quick starting guide. Make sure you upload your **public key** in your OCI account and note the fingerprint information.
     
     The OCI CLI is used to configure the access to the OKE cluster locally only, so this deployment could be modified to only use `kubectl` if this is intended for a remote setup, but configuring the CLI helps in several tasks.
 
-### Clone the repository
+### 1) Clone the repository
 
 Create a local copy of this repository. You can make that with the commands:
 
@@ -47,7 +51,7 @@ git clone https://github.com/oracle-quickstart/oci-oke-osb
 cd oci-oke-osb
 ```
 
-### `TF_VARS.sh` file
+### 2) Create and source a `TF_VARS.sh` file
 
 In order to be able to work in multiple environments, it is convenient to place required terraform variables in environment variables
 
@@ -65,7 +69,15 @@ export TF_VAR_region=us-ashburn-1
 
 Some of this information is generated when installing the OCI CLI, but you may also use a different ssh key.
 
-### `terraform.tfvars` file
+Source the file in your shell with:
+
+```bash
+source ./TF_VARS.sh
+# or more simply, to achieve the same:
+. ./TF_VARS.sh
+```
+
+### 3) Create a `terraform.tfvars` file
 
 Create a `terraform.tfvars` file from the `terraform.tfvars.template` file and populate the following mandatory information:
 
@@ -80,7 +92,7 @@ secrets_encryption_key_ocid = null
 
 If you wish to encrypt Kubernetes secrets at rest, you can provision a vault and key and reference this key OCID as `secrets_encryption_key_ocid` to use in the kubernetes cluster.
 
-### Deploy the infrastructure
+### 4) Deploy the infrastructure
 
 Use the following commands:
 

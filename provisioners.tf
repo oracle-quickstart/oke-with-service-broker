@@ -1,3 +1,6 @@
+## Copyright © 2021, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 # Configure the cluster with kube-config
 
 resource "null_resource" "cluster_kube_config" {

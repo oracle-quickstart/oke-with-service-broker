@@ -1,3 +1,6 @@
+## Copyright © 2021, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 helm repo add service-catalog https://kubernetes-sigs.github.io/service-catalog
 
 helm install catalog service-catalog/catalog --namespace oci-service-broker

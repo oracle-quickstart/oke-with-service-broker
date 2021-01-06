@@ -1,3 +1,6 @@
+## Copyright © 2021, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 CHART_VERSION=1.5.2
 # if editing the CHART_VERSION also make sure to edit the image tag in the osb-values.yaml to match the image version
 

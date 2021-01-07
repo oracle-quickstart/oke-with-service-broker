@@ -47,8 +47,8 @@ This terraform deployment requires the prior installation of the following:
 Create a local copy of this repository. You can make that with the commands:
 
 ```bash
-git clone https://github.com/oracle-quickstart/oci-oke-osb
-cd oci-oke-osb
+git clone https://github.com/oracle-quickstart/oke-with-service-broker
+cd oke-with-service-broker
 ```
 
 ### 2) Create and source a `TF_VARS.sh` file
@@ -136,9 +136,26 @@ In a namespace called `oci-service-broker`, it deploys:
 
 and registers the OCI Service Broker with the Service Catalog.
 
+## Accessing the Kubernetes UI
+
+To access the Kubernetes Cluster UI, you can use the following snipet:
+
+```bash
+# Get an access token
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep oke-admin | awk '{print $1}')
+
+# run a kube proxy
+kubectl proxy &
+
+# open your browser to
+open 'http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login'
+```
+
+or use the provided helper script `access_k8s_dashboard.sh`
+
 ## What's next?
 
-Once the OCI Service Broker is deployed, you can now provision Streams for Oracle Streaming Service, Autonomous Transaction Processing Databases, or Data Warehouses, and create/delete Object Storage buckets following the [examples in the OCI Service Broker repository](https://github.com/oracle/oci-service-broker/tree/master/charts/oci-service-broker/samples)
+Once the OCI Service Broker is deployed, you can now provision Streams for Oracle Streaming Service, Autonomous Transaction Processing Databases, or Data Warehouses, and create/delete Object Storage buckets following the <a href="https://github.com/oracle/oci-service-broker/tree/master/charts/oci-service-broker/samples" target="_blank">examples in the OCI Service Broker repository</a>
 
 ## Destroy the Deployment
 When you no longer need the deployment, you can run this command to destroy it:

@@ -1,4 +1,4 @@
-# oci-oke-osb
+# oke-with-service-broker
 
 This reference architecture creates an Oracle Kubernetes Engine cluster with a node pool with 3 nodes, and deploys the OCI Service Broker following recommended best practices.
 
@@ -104,7 +104,7 @@ Use the following commands:
 
 and answer **Yes** at the prompt to deploy the stack.
 
-## What is does
+## What it does
 
 The deployment creates:
 

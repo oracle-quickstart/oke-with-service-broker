@@ -162,6 +162,21 @@ resource "null_resource" "deploy_service_catalog" {
     }
 }
 
+# Create TLS certificate secret for use by the OCI Service Broker
+
+resource "null_resource" "osb_tls" {
+
+    depends_on = [null_resource.create_namespace]
+
+    provisioner "local-exec" {
+        command = file("./templates/osb-tls-secret.tpl")
+    }
+    provisioner "local-exec" {
+        when = destroy
+        command = "kubectl delete secret osb-client-tls-cert --namespace oci-service-broker"
+        on_failure = continue
+    }
+}
 
 
 # Deploy the OCI Service Broker helm chart

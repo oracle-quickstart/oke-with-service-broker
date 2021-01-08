@@ -60,7 +60,6 @@ storage:
       # etcd-client-ca.crt - SSL Certificate Authority file used to secure etcd communication.
       # etcd-client.crt - SSL certification file used to secure etcd communication.
       # etcd-client.key - SSL key file used to secure etcd communication.
-      # clientCertSecretName: etcd-tls-secret
       clientCertSecretName: etcd-client-tls-cert-osb
 
 # Any key value pair under the serviceTags section will be added as tags in the 
@@ -74,10 +73,10 @@ serviceTags:
 tls: 
   # Change this parameter to true if the Broker needs to be TLS enabled
   # enabled: true
-  enabled: false
+  enabled: true
   # The Kubernetes secret which contains the PKCS#12 file and password required to configure TLS
-  # secretName: osb-client-tls-cert
-  secretName: ""
+  secretName: osb-client-tls-cert
+  # secretName: ""
 
 # Log Levels are configured below
 logLevel:

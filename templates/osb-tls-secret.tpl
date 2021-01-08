@@ -1,30 +1,24 @@
 ## Copyright © 2021, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
-cd ./keys
+pushd ./keys
 mkdir -p osb
-cd osb
+pushd osb
 
-cat > ssl.conf <<EOF
-[req]
-prompt = no
-distinguished_name = req_distinguished_name
-req_extensions = v3_req
+# generate a password for the certificate keystore
+PASSWORD=$(openssl rand -base64 32)
 
-[req_distinguished_name]
-C = US
-ST = California
-L = San Francisco
-O = ACME
-CN = oci-service-broker.oci-service-broker.svc.cluster.local
+# create a new cert
+openssl req -newkey rsa:2048 -config ../osb.conf -nodes -keyout key.pem -x509 -days 3650 -out certificate.pem
+# package the cert in PKCS12 keystore
+openssl pkcs12 -inkey key.pem -in certificate.pem -export -out certificate.p12 -passout pass:$PASSWORD
 
-[v3_req]
-basicConstraints = CA:FALSE
-keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-EOF
+# create the kubernetes secret for the OSB pod to use 
+kubectl create secret generic osb-client-tls-cert --from-literal=keyStore.password=$PASSWORD --from-file=keyStore=certificate.p12 -n oci-service-broker
 
-openssl req -newkey rsa:2048 -config ssl.conf -nodes -keyout key.pem -x509 -days 3650 -out certificate.pem
-# package in PKCS12 keystore
-openssl pkcs12 -inkey key.pem -in certificate.pem -export -out certificate.p12 -passout pass:${password}
-
-kubectl create secret generic osb-client-tls-cert --from-literal=keyStore.password=${password} --from-file=keyStore=certificate.p12
+# encode the cert to base64
+CA_BUNDLE=$(cat certificate.pem | base64)
+popd
+popd
+# inject the caBundle parameter in the ClusterBinding template.
+sed -e "s|SUBSTITUTE_CA_BUNDLE|$CA_BUNDLE|;" ./templates/oci-service-broker.ClusterServiceBroker.yaml.tpl > ./templates/oci-service-broker.ClusterServiceBroker.yaml

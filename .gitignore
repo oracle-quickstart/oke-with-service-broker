@@ -16,3 +16,4 @@ keys/**/*.key
 keys/osb/ssl.conf
 ca.srl
 cluster_admin_oci_config.txt
+.terraform.tfstate.lock.info

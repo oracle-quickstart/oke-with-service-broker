@@ -18,6 +18,8 @@ oke_cluster = {
   cluster_options_add_ons_is_tiller_enabled               = true
 }
 
+# Note: 3 nodes are required at a minimum, across any number of pools, for etcd to deploy properly
+# defaults to 1 pool, feel free to add more if needed.
 node_pools = [
   {
     pool_name  = "pool1"
@@ -29,5 +31,5 @@ node_pools = [
   }
 ]
 
-# Optional parameter
+# Optional parameter, requires a vault and key to be created in the account.
 secrets_encryption_key_ocid = null

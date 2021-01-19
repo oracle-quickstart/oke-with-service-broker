@@ -29,7 +29,7 @@ resource "oci_identity_policy" "cluster_admins_policy" {
     description = "Cluster admins policy"
     name = "cluster_admins_policy"
     statements = [
-        "allow group cluster_admin_users_${md5(var.cluster_id)} to use clusters in tenancy where request.region='${var.region}'"
+        "allow group cluster_admin_users_${md5(var.cluster_id)} to use clusters in tenancy where request.region = '${var.region}'"
     ]
 }
 

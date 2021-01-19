@@ -29,9 +29,9 @@ resource "oci_identity_policy" "osb_user_policy" {
     description = "OCI Service broker user policy"
     name = "OCI_Service_Broker_user_policy"
     statements = [
-        "allow group osb_users_${md5(var.cluster_id)} to manage autonomous-database-family in tenancy where request.region='${var.region}'",
-        "allow group osb_users_${md5(var.cluster_id)} to manage buckets in tenancy where request.region='${var.region}'",
-        "allow group osb_users_${md5(var.cluster_id)} to manage streams in tenancy where request.region='${var.region}'"
+        "allow group osb_users_${md5(var.cluster_id)} to manage autonomous-database-family in tenancy where request.region = '${var.region}'",
+        "allow group osb_users_${md5(var.cluster_id)} to manage buckets in tenancy where request.region = '${var.region}'",
+        "allow group osb_users_${md5(var.cluster_id)} to manage streams in tenancy where request.region = '${var.region}'"
     ]
 }
 

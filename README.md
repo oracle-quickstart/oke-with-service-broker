@@ -1,4 +1,4 @@
-# ![](https://bit.ly/2M63MK5) oke-with-service-broker
+# oke-with-service-broker
 
 This reference architecture creates an Oracle Kubernetes Engine cluster with a node pool with 3 nodes, and deploys the OCI Service Broker following recommended best practices.
 

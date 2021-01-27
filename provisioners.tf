@@ -54,22 +54,6 @@ resource "null_resource" "create_namespace" {
     }
 }
 
-# # Deploy cert-manager
-
-# resource "null_resource" "deploy_cert_manager" {
-
-#     depends_on = [null_resource.cluster_kube_config]
-
-#     provisioner "local-exec" {
-#         command = "kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.yaml"
-#     }
-#     provisioner "local-exec" {
-#         when = destroy
-#         command = "kubectl delete -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.yaml"
-#         on_failure = continue
-#     }
-# }
-
 # Generate certificates for etcd TLS
 
 resource "null_resource" "gen_etcd_certs" {
@@ -96,8 +80,8 @@ resource "null_resource" "deploy_etcd" {
         command = templatefile("./templates/deploy-etcd.tpl",
             {
                 region = var.region
-                ocir_username = module.ocir_puller.credentials.username
-                ocir_token = module.ocir_puller.credentials.token
+                ocir_username = module.ocir_puller.auth_token.username
+                ocir_token = module.ocir_puller.auth_token.token
             })
     }
     provisioner "local-exec" {
@@ -108,7 +92,7 @@ resource "null_resource" "deploy_etcd" {
 
 }
 
-# Create the OCIR user secret to use to push/pull docker images
+# Create the OCIR user secret to use to pull docker images from OCI registry
 
 resource "null_resource" "docker_registry" {
 
@@ -118,8 +102,8 @@ resource "null_resource" "docker_registry" {
         command = templatefile("./templates/docker-registry-secret.tpl",
             {
                 region = var.region
-                ocir_username = module.ocir_puller.credentials.username
-                ocir_token = module.ocir_puller.credentials.token
+                ocir_username = module.ocir_puller.auth_token.username
+                ocir_token = module.ocir_puller.auth_token.token
             })
     }
     provisioner "local-exec" {
@@ -137,7 +121,7 @@ resource "null_resource" "osb_credentials" {
     depends_on = [null_resource.create_namespace]
 
     provisioner "local-exec" {
-        command = templatefile("./templates/osb-credentials-secret.tpl", module.osb_user.credentials)
+        command = templatefile("./templates/osb-credentials-secret.tpl", module.osb_user.oci_config)
     }
     provisioner "local-exec" {
         when = destroy
@@ -212,15 +196,3 @@ resource "null_resource" "register_service_broker" {
         on_failure = continue
     }
 }
-
-# grant CI user access to cluster
-
-resource "null_resource" "ci_user_bind_cluster_admin_role" {
-
-    depends_on = [null_resource.cluster_kube_config]
-
-    provisioner "local-exec" {
-        command = "kubectl create clusterrolebinding ci-user-cluster-role --clusterrole=cluster-admin --user=${module.ci_user.credentials.user_ocid}"
-    }
-}
-

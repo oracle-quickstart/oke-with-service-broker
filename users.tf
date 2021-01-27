@@ -3,32 +3,44 @@
 
 # OCI Registry docker login credentials for image pull
 module "ocir_puller" {
-  source = "./modules/iam/ocir_puller_user"
-  tenancy_ocid = var.tenancy_ocid
-  cluster_id = module.cluster.cluster.id
+    source = "./modules/iam"
+    tenancy_ocid = var.tenancy_ocid
+    region = var.region
+    user_description = local.ocir_puller_user_description
+    user_name = local.ocir_puller_user_name
+    group_ocid = var.ocir_puller_group_ocid
+    group_description = local.ocir_puller_group_description
+    group_name = local.ocir_puller_group_name
+    policies = [{
+                    description = "OCIR pullers user policy"
+                    name = "OCIR_pullers_policy_${local.idx}"
+                    statements = [
+                        "allow group ${local.ocir_puller_group_name} to read repos in tenancy",
+                    ]                
+                }]
+    generate_api_key = false
+    generate_auth_token = true
 }
 
 # OCI user for the OCI Service Broker to provision services
 module "osb_user" {
-  source = "./modules/iam/osb_user"
-  tenancy_ocid = var.tenancy_ocid
-  compartment_ocid = var.compartment_ocid
-  cluster_id = module.cluster.cluster.id
-  region = var.region
-}
-
-# OCI Registry docker loging credentials for CI to push images to registry
-module "ocir_pusher" {
-  source = "./modules/iam/ocir_pusher_user"
-  tenancy_ocid = var.tenancy_ocid
-  cluster_id = module.cluster.cluster.id
-}
-
-# OCI user with k8s cluster admin role for CI to deploy 
-module "ci_user" {
-  source = "./modules/iam/cluster_admin"
-  tenancy_ocid = var.tenancy_ocid
-  compartment_ocid = var.compartment_ocid
-  cluster_id = module.cluster.cluster.id
-  region = var.region
+    source = "./modules/iam"
+    tenancy_ocid = var.tenancy_ocid
+    region = var.region
+    user_description = local.osb_user_description
+    user_name = local.osb_user_name
+    group_ocid = var.osb_group_ocid
+    group_description = local.osb_group_description
+    group_name = local.osb_group_name
+    policies = [{
+                    description = "OCI Service broker user policy"
+                    name = "OCI_Service_Broker_user_policy_${local.idx}"
+                    statements = [
+                        "allow group ${local.osb_group_name} to manage autonomous-database-family in tenancy where request.region = '${var.region}'",
+                        "allow group ${local.osb_group_name} to manage buckets in tenancy where request.region = '${var.region}'",
+                        "allow group ${local.osb_group_name} to manage streams in tenancy where request.region = '${var.region}'"
+                    ]                
+                }]
+    generate_api_key = true
+    generate_auth_token = false
 }

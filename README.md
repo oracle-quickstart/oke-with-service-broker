@@ -90,6 +90,17 @@ ssh_authorized_key = ""
 secrets_encryption_key_ocid = null
 ```
 
+You can also re-use groups that were previously created, by providing the group_ocid.
+
+The templates gives the option to provide:
+
+```
+# a group for users to pull images from OCI Registry
+ocir_puller_group_ocid = null
+# a group for users to manage the lifecycle of Autonmous databases (ATP, ADW), Streams of the streaming service, and object storage buckets.
+osb_group_ocid = null
+```
+
 If you wish to encrypt Kubernetes secrets at rest, you can provision a vault and key and reference this key OCID as `secrets_encryption_key_ocid` to use in the kubernetes cluster.
 
 ### 4) Deploy the infrastructure
@@ -113,12 +124,6 @@ The deployment creates:
 - A `ocir_puller` group and a user with policy allowing the user to pull container images in the compartment. The credentials for this user are stored in a secret of type `docker-registry` named `ocir-secret` in the `default` namespace, which can be used for deployments needing to pull images from the OCI Registry in your tenancy.
 
   *Note that if you need to pull images for a deployment in a different namespace, you will need to copy the secret to the other namespace.*
-
-- A `ocir_pusher` group and a user with policy allowing the user to create and publish container images in the tenancy. The credentials for this user are listed in the output of the terraform script as `docker_login_for_CI`, and can be used for development or in CI/CD pipelines to create container images.
-
-- A `cluster_admin` group and a user with policy allowing the user to manage kubernetes clusters in the tenancy, along with a private key whose public key has been uploaded for this user. The OCI credentials for this user (including the key path, fingerprint and user id) are listed in the output of the terraform script as `CI_user_credentials`, and can be used to use the OCI CLI in a CD pipeline.
-
-- A `kubeconfig` output which, along with the `CI_user_credentials` can be used in CI/CD to deploy kubernetes manifests.
 
 - In addition, it creates a `osb_user` group and user with policy allowing management of Autonmous DBs, Streaming and Object Storage resources, whose OCI credentials are stored in a secret called `osbcredentials`, as required by the OCI Service Broker to interact with the OCI services.
 

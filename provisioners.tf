@@ -108,7 +108,7 @@ resource "null_resource" "docker_registry" {
     }
     provisioner "local-exec" {
         when = destroy
-        command = "kubectl delete secret ocir-secret"
+        command = "kubectl delete secret ocir-secret -n default"
         on_failure = continue
     }
 

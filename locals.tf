@@ -20,7 +20,7 @@ locals {
     cluster_idx = substr(md5(module.cluster.cluster.id), 0, 4)
     idx = random_integer.random.result
     user_idx = "${local.cluster_idx}_${local.idx}"
-    ocir_puller_user_name = "ocir_pusher_${local.user_idx}"
+    ocir_puller_user_name = "ocir_puller_${local.user_idx}"
     ocir_puller_user_description = "OCIR puller user for ${module.cluster.cluster.id}"
     ocir_puller_group_name = "ocir_pullers_${local.idx}"
     ocir_puller_group_description = "OCIR puller users ${local.idx}"

@@ -9,7 +9,7 @@ helm install oci-service-broker https://github.com/oracle/oci-service-broker/rel
   --set image.repository=iad.ocir.io/ocisateam/oci-service-broker/oci-service-broker \
   --set image.tag=1.5.3 \
   --set ociCredentials.secretName="osb-credentials" \
-  --set storage.etcd.servers="https://etcd-0.etcd-headless.oci-service-broker.svc.cluster.local:2379,https://etcd-1.etcd-headless.oci-service-broker.svc.cluster.local:2379,https://etcd-2.etcd-headless.oci-service-broker.svc.cluster.local:2379" \
+  --set storage.etcd.servers='https://etcd-0.etcd-headless.oci-service-broker.svc.cluster.local:2379\,https://etcd-1.etcd-headless.oci-service-broker.svc.cluster.local:2379\,https://etcd-2.etcd-headless.oci-service-broker.svc.cluster.local:2379' \
   --set storage.etcd.tls.clientCertSecretName=etcd-client-tls-cert-osb \
   --set tls.secretName=osb-client-tls-cert 
 

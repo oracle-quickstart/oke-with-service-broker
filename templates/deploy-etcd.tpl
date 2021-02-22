@@ -11,7 +11,21 @@ while [[ $(for i in $(kubectl get nodes -o 'jsonpath={..status.conditions[?(@.ty
     echo "waiting for at least 3 nodes to be ready..." && sleep 1;
 done
 
-helm install etcd bitnami/etcd --version $CHART_VERSION --namespace oci-service-broker --values ./templates/etcd-values.yaml
+helm install etcd bitnami/etcd --version $CHART_VERSION --namespace oci-service-broker \
+    --set statefulset.replicaCount=3 \
+    --set auth.rbac.enabled=false \
+    --set auth.client.secureTransport=true \
+    --set auth.client.enableAuthentication=true \
+    --set auth.client.existingSecret=etcd-peer-tls-cert \
+    --set auth.client.certFilename=tls.crt \
+    --set auth.client.certKeyFilename=tls.key \
+    --set auth.peer.secureTransport=true \
+    --set auth.peer.enableAuthentication=true \
+    --set auth.peer.existingSecret=etcd-peer-tls-cert \
+    --set auth.peer.certFilename=tls.crt \
+    --set auth.peer.certKeyFilename=tls.key \
+    --set podAntiAffinityPreset=hard \
+    --set metrics.enabled=true
 
 while [[ $(kubectl get pod etcd-0 -n oci-service-broker -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do 
     echo "waiting for pod etcd-0" && sleep 1; 

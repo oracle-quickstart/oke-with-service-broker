@@ -9,29 +9,29 @@ module "vcn" {
 }
 
 module "cluster" {
-  source              = "./modules/k8s"
-  cluster_name = local.cluster_name
-  tenancy_ocid = var.tenancy_ocid
-  compartment_ocid    = var.compartment_ocid
-  vcn_id                 = module.vcn.vcn_id
-  oke_cluster = var.oke_cluster
-  cluster_lb_subnet_ids      = [module.vcn.cluster_lb_subnet_id]
+  source                      = "./modules/k8s"
+  cluster_name                = local.cluster_name
+  tenancy_ocid                = var.tenancy_ocid
+  compartment_ocid            = var.compartment_ocid
+  vcn_id                      = module.vcn.vcn_id
+  oke_cluster                 = var.oke_cluster
+  cluster_lb_subnet_ids       = [module.vcn.cluster_lb_subnet_id]
   secrets_encryption_key_ocid = var.secrets_encryption_key_ocid
-} 
+}
 
 module "node_pools" {
-  source = "./modules/node_pool"
-  compartment_ocid    = var.compartment_ocid
-  cluster_id = module.cluster.cluster.id
+  source             = "./modules/node_pool"
+  compartment_ocid   = var.compartment_ocid
+  cluster_id         = module.cluster.cluster.id
   kubernetes_version = var.oke_cluster.k8s_version
-  ssh_authorized_key      = var.ssh_authorized_key
-  node_pools = var.node_pools
-  nodes_subnet_id = module.vcn.cluster_nodes_subnet_id
+  ssh_authorized_key = var.ssh_authorized_key
+  node_pools         = var.node_pools
+  nodes_subnet_id    = module.vcn.cluster_nodes_subnet_id
 }
 
 module "logging" {
-  source = "./modules/logging"
-  tenancy_ocid = var.tenancy_ocid
+  source           = "./modules/logging"
+  tenancy_ocid     = var.tenancy_ocid
   compartment_ocid = var.compartment_ocid
-  cluster_id = module.cluster.cluster.id
+  cluster_id       = module.cluster.cluster.id
 }

@@ -41,8 +41,8 @@ variable "secrets_encryption_key_ocid" {
   default = null
 }
 variable "ocir_puller_group_ocid" {
-    default = null
+  default = null
 }
 variable "osb_group_ocid" {
-    default = null
+  default = null
 }

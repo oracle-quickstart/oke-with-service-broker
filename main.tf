@@ -14,6 +14,7 @@ module "cluster" {
   tenancy_ocid = var.tenancy_ocid
   compartment_ocid    = var.compartment_ocid
   vcn_id                 = module.vcn.vcn_id
+  oke_cluster = var.oke_cluster
   cluster_lb_subnet_ids      = [module.vcn.cluster_lb_subnet_id]
   secrets_encryption_key_ocid = var.secrets_encryption_key_ocid
 } 

@@ -22,8 +22,8 @@ resource "oci_containerengine_node_pool" "node_pool" {
 
   node_source_details {
     #Required
-    image_id    = data.oci_containerengine_node_pool_option.node_pool_options.sources.0.image_id
-    source_type = data.oci_containerengine_node_pool_option.node_pool_options.sources.0.source_type
+    image_id    = local.node_pool_images.0.image_id
+    source_type = local.node_pool_images.0.source_type
   }
 
   node_config_details {

@@ -12,7 +12,7 @@ output oci_config {
 }
 
 output auth_token {
-  value = var.generate_auth_token || (var.auth_token != null && var.user_ocid != null)? {
+  value = var.generate_auth_token ? {
     username = "${data.oci_objectstorage_namespace.tenancy_namespace.namespace}/${data.oci_identity_user.user.name}"
     token = var.auth_token != null ? var.auth_token : oci_identity_auth_token.auth_token[0].token
   } : {}

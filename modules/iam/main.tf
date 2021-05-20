@@ -55,8 +55,8 @@ resource "oci_identity_api_key" "api_key" {
 }
 
 resource "oci_identity_auth_token" "auth_token" {
-    count = var.generate_auth_token ? 1 : 0
+    count = var.generate_auth_token ? (var.auth_token == null ? 1 : 0) : 0
     #Required
-    description = "Auth Token"
+    description = "${var.user_name} Auth Token"
     user_id = var.user_ocid == null ? join("", oci_identity_user.user.*.id) : var.user_ocid
 }

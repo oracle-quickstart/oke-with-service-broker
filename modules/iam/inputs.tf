@@ -1,5 +1,8 @@
 variable tenancy_ocid {}
 variable region {}
+variable user_ocid {
+    default = null
+}
 variable user_name {
     type = string
 }

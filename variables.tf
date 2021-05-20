@@ -4,6 +4,9 @@
 variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
 variable "region" {}
+variable "user_ocid" {
+  default = null
+}
 variable "ssh_authorized_key" {}
 
 variable "deployment_name" {

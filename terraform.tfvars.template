@@ -5,6 +5,13 @@ tenancy_ocid = "ocid1.tenancy.oc1.."
 compartment_ocid = "ocid1.compartment.oc1.."
 region           = "us-ashburn-1"
 
+# user_ocid: Keep null to provision users and groups with specific policies for their respective use
+# If you do not have permission to create users or groups in your tenancy, provide your user_ocid.
+# Note you need to have less than 3 API Keys and less than 2 Auth Token already in order for creation to succeed.
+user_ocid = null
+
+deployment_name = "osb"
+
 vcn_cidr = "10.0.0.0/16"
 
 ssh_authorized_key = ""

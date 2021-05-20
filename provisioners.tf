@@ -77,12 +77,7 @@ resource "null_resource" "deploy_etcd" {
   depends_on = [null_resource.gen_etcd_certs]
 
   provisioner "local-exec" {
-    command = templatefile("./templates/deploy-etcd.tpl",
-      {
-        region        = var.region
-        ocir_username = module.ocir_puller.auth_token.username
-        ocir_token    = module.ocir_puller.auth_token.token
-    })
+    command = templatefile("./templates/deploy-etcd.tpl",{})
   }
   provisioner "local-exec" {
     when       = destroy

@@ -4,6 +4,7 @@
 # OCI Registry docker login credentials for image pull
 module "ocir_puller" {
   source            = "./modules/iam"
+  user_ocid         = var.user_ocid
   tenancy_ocid      = var.tenancy_ocid
   region            = var.region
   user_description  = local.ocir_puller_user_description
@@ -25,6 +26,7 @@ module "ocir_puller" {
 # OCI user for the OCI Service Broker to provision services
 module "osb_user" {
   source            = "./modules/iam"
+  user_ocid         = var.user_ocid
   tenancy_ocid      = var.tenancy_ocid
   region            = var.region
   user_description  = local.osb_user_description

@@ -7,6 +7,9 @@ variable "region" {}
 variable "user_ocid" {
   default = null
 }
+variable auth_token {
+  default = null
+}
 variable "ssh_authorized_key" {}
 
 variable "deployment_name" {

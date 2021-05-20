@@ -21,6 +21,7 @@ module "ocir_puller" {
   }]
   generate_api_key    = false
   generate_auth_token = true
+  auth_token = var.auth_token
 }
 
 # OCI user for the OCI Service Broker to provision services

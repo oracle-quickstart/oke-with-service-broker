@@ -3,6 +3,9 @@ variable region {}
 variable user_ocid {
     default = null
 }
+variable auth_token {
+    default = null
+}
 variable user_name {
     type = string
 }

@@ -9,6 +9,10 @@ region           = "us-ashburn-1"
 # If you do not have permission to create users or groups in your tenancy, provide your user_ocid.
 # Note you need to have less than 3 API Keys and less than 2 Auth Token already in order for creation to succeed.
 user_ocid = null
+# Auth Token
+# Optionally provide an Auth Token associated with the user_ocid, if you have one and dont have enough available tokens
+# The auth_token must be associated with the user_ocid
+auth_token = null
 
 deployment_name = "osb"
 

@@ -4,3 +4,7 @@
 output "kube_config" {
   value = module.cluster.kube_config
 }
+
+output "auth_token" {
+  value = var.user_ocid == null ? "" : module.ocir_puller.auth_token.token
+}

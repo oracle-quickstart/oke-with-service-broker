@@ -97,8 +97,8 @@ resource "null_resource" "docker_registry" {
     command = templatefile("./templates/docker-registry-secret.tpl",
       {
         region        = var.region
-        ocir_username = module.ocir_puller.auth_token.username
-        ocir_token    = module.ocir_puller.auth_token.token
+        ocir_username = module.ocir_puller.docker_credentials.username
+        ocir_token    = module.ocir_puller.docker_credentials.token
     })
   }
   provisioner "local-exec" {

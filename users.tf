@@ -19,8 +19,8 @@ module "ocir_puller" {
       "allow group ${local.ocir_puller_group_name} to read repos in tenancy",
     ]
   }]
-  generate_api_key    = false
-  generate_auth_token = true
+  generate_oci_config    = false
+  generate_docker_credentials = true
   auth_token = var.auth_token
 }
 
@@ -44,6 +44,6 @@ module "osb_user" {
       "allow group ${local.osb_group_name} to manage streams in tenancy where request.region = '${var.region}'"
     ]
   }]
-  generate_api_key    = true
-  generate_auth_token = false
+  generate_oci_config    = true
+  generate_docker_credentials = false
 }

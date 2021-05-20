@@ -24,9 +24,9 @@ variable group_description {
 variable policies {
     type = list(any)
 }
-variable generate_api_key {
+variable generate_oci_config {
     type = bool
 }
-variable generate_auth_token {
+variable generate_docker_credentials {
     type = bool
 }

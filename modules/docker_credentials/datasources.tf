@@ -4,7 +4,3 @@
 data "oci_objectstorage_namespace" "tenancy_namespace" {
     compartment_id = var.tenancy_ocid
 }
-
-data "oci_identity_user" "user" {
-    user_id = var.user_ocid == null ? join("", oci_identity_user.user.*.id) : var.user_ocid
-}

@@ -17,7 +17,7 @@ module "user" {
   user_name=var.user_name
   user_description=var.user_description
   create_group_membership=var.user_ocid == null ? true : false
-  # if group_ocid is provided, will create group memberships. If user_ocid is provided we assume it has
+  # if group_ocid is provided, will create group memberships. Ignored if user_ocid is provided
   group_ocid=module.group.group_ocid
 }
 

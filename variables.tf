@@ -16,6 +16,22 @@ variable "deployment_name" {
   default = "OKE"
 }
 
+variable "ocir_puller_user_ocid" {
+  default = null
+}
+variable "ocir_puller_group_ocid" {
+  default = null
+}
+variable "ocir_puller_auth_token" {
+  default = null
+}
+variable "osb_user_ocid" {
+  default = null
+}
+variable "osb_group_ocid" {
+  default = null
+}
+
 variable "vcn_cidr" {
   default = "10.0.0.0/16"
 }
@@ -44,11 +60,5 @@ variable "node_pools" {
 }
 
 variable "secrets_encryption_key_ocid" {
-  default = null
-}
-variable "ocir_puller_group_ocid" {
-  default = null
-}
-variable "osb_group_ocid" {
   default = null
 }

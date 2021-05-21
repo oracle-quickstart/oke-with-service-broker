@@ -4,6 +4,7 @@
 # OCI Registry docker login credentials for image pull
 module "ocir_puller" {
   source            = "./modules/iam"
+  user_ocid         = var.ocir_puller_user_ocid
   tenancy_ocid      = var.tenancy_ocid
   region            = var.region
   user_description  = local.ocir_puller_user_description
@@ -18,13 +19,15 @@ module "ocir_puller" {
       "allow group ${local.ocir_puller_group_name} to read repos in tenancy",
     ]
   }]
-  generate_api_key    = false
-  generate_auth_token = true
+  generate_oci_config    = false
+  generate_docker_credentials = true
+  auth_token = var.ocir_puller_auth_token
 }
 
 # OCI user for the OCI Service Broker to provision services
 module "osb_user" {
   source            = "./modules/iam"
+  user_ocid         = var.osb_user_ocid
   tenancy_ocid      = var.tenancy_ocid
   region            = var.region
   user_description  = local.osb_user_description
@@ -41,6 +44,6 @@ module "osb_user" {
       "allow group ${local.osb_group_name} to manage streams in tenancy where request.region = '${var.region}'"
     ]
   }]
-  generate_api_key    = true
-  generate_auth_token = false
+  generate_oci_config    = true
+  generate_docker_credentials = false
 }

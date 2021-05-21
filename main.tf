@@ -28,10 +28,3 @@ module "node_pools" {
   node_pools         = var.node_pools
   nodes_subnet_id    = module.vcn.cluster_nodes_subnet_id
 }
-
-module "logging" {
-  source           = "./modules/logging"
-  tenancy_ocid     = var.tenancy_ocid
-  compartment_ocid = var.compartment_ocid
-  cluster_id       = module.cluster.cluster.id
-}

@@ -51,33 +51,7 @@ git clone https://github.com/oracle-quickstart/oke-with-service-broker
 cd oke-with-service-broker
 ```
 
-### 2) Create and source a `TF_VARS.sh` file
-
-In order to be able to work in multiple environments, it is convenient to place required terraform variables in environment variables
-
-We'll use a file called `TF_VARS.sh` that can be sourced
-
-The file must contain the following variables:
-
-```
-export TF_VAR_user_ocid=ocid1.user.oc1..
-export TF_VAR_fingerprint=dc:6e:...
-export TF_VAR_private_key_path=~/.oci/oci_api_key.pem
-export TF_VAR_tenancy_ocid=ocid1.tenancy.oc1..
-export TF_VAR_region=us-ashburn-1
-```
-
-Some of this information is generated when installing the OCI CLI, but you may also use a different ssh key.
-
-Source the file in your shell with:
-
-```bash
-source ./TF_VARS.sh
-# or more simply, to achieve the same:
-. ./TF_VARS.sh
-```
-
-### 3) Create a `terraform.tfvars` file
+### 2) Create a `terraform.tfvars` file
 
 Create a `terraform.tfvars` file from the `terraform.tfvars.template` file and populate the following mandatory information:
 
@@ -90,20 +64,33 @@ ssh_authorized_key = ""
 secrets_encryption_key_ocid = null
 ```
 
-You can also re-use groups that were previously created, by providing the group_ocid.
-
-The templates gives the option to provide:
-
-```
-# a group for users to pull images from OCI Registry
-ocir_puller_group_ocid = null
-# a group for users to manage the lifecycle of Autonmous databases (ATP, ADW), Streams of the streaming service, and object storage buckets.
-osb_group_ocid = null
-```
-
 If you wish to encrypt Kubernetes secrets at rest, you can provision a vault and key and reference this key OCID as `secrets_encryption_key_ocid` to use in the kubernetes cluster.
 
-### 4) Deploy the infrastructure
+    ***Note***: This templates requires permission to create groups and users.
+
+    If you do not have permission to create groups, you can also re-use groups that were previously created, by providing the group_ocid:
+
+    The templates gives the option to provide:
+
+    ```bash
+    # a group for users to pull images from OCI Registry
+    ocir_puller_group_ocid = null
+    # a group for users to manage the lifecycle of Autonmous databases (ATP, ADW), Streams of the streaming service, and object storage buckets.
+    osb_group_ocid = null
+    ```
+
+    If you do not have permission to create users, provide your own user OCID to use for all components.
+
+    ```bash
+    ocir_puller_user_ocid = "<your user>"
+    osb_user_ocid = "<your user>"
+    ```
+
+    This will create a new API Key and Auth Token on your user, so you need to have less than 3 API keys and less than 2 Auth Token on your user already or it will fail.
+
+    You can also pass an Auth Token with the `ocir_puller_auth_token` variable. It must be associated with the user_ocid.
+
+### 3) Deploy the infrastructure
 
 Use the following commands:
 

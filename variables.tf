@@ -4,10 +4,32 @@
 variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
 variable "region" {}
+variable "user_ocid" {
+  default = null
+}
+variable auth_token {
+  default = null
+}
 variable "ssh_authorized_key" {}
 
 variable "deployment_name" {
   default = "OKE"
+}
+
+variable "ocir_puller_user_ocid" {
+  default = null
+}
+variable "ocir_puller_group_ocid" {
+  default = null
+}
+variable "ocir_puller_auth_token" {
+  default = null
+}
+variable "osb_user_ocid" {
+  default = null
+}
+variable "osb_group_ocid" {
+  default = null
 }
 
 variable "vcn_cidr" {
@@ -38,11 +60,5 @@ variable "node_pools" {
 }
 
 variable "secrets_encryption_key_ocid" {
-  default = null
-}
-variable "ocir_puller_group_ocid" {
-  default = null
-}
-variable "osb_group_ocid" {
   default = null
 }

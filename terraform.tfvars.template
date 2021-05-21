@@ -5,14 +5,29 @@ tenancy_ocid = "ocid1.tenancy.oc1.."
 compartment_ocid = "ocid1.compartment.oc1.."
 region           = "us-ashburn-1"
 
-# user_ocid: Keep null to provision users and groups with specific policies for their respective use
-# If you do not have permission to create users or groups in your tenancy, provide your user_ocid.
-# Note you need to have less than 3 API Keys and less than 2 Auth Token already in order for creation to succeed.
-user_ocid = null
-# Auth Token
-# Optionally provide an Auth Token associated with the user_ocid, if you have one and dont have enough available tokens
-# The auth_token must be associated with the user_ocid
-auth_token = null
+# If you do not have permission to create users, provide the user_ocid of a user 
+# that has permission to pull images from OCI Registry
+ocir_puller_user_ocid        = null
+
+# If the user provided above already has an auth_token to use, provide it here. 
+# If null a new token will be created. 
+# This requires that the user has 1 token at most already (as there is a limit of 2 tokens per user)
+ocir_puller_auth_token = null
+
+# If you have permission to create users, and a group already exists with policies 
+# to pull images from OCI Registry, you can provide the group_ocid 
+# and a new user will be created and be made a member of this group
+# Leave null if you are providing a ocir_puller_user_ocid
+ocir_puller_group_ocid = null
+
+# If you do not have permission to create users, provide the user_ocid of a user 
+# that has permission to create Autonomous Database, Object Storage buckets and Streams
+ocir_puller_user_ocid        = null
+
+# If you have permission to create users, and a group already exists with policies to pull images from OCI Registry, you can provide the group_ocid 
+# and a new user will be created and be made a member of this group
+# Leave null if you are providing a osb_user_ocid
+osb_group_ocid = null
 
 deployment_name = "osb"
 

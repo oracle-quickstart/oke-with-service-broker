@@ -82,12 +82,13 @@ If you wish to encrypt Kubernetes secrets at rest, you can provision a vault and
     If you do not have permission to create users, provide your own user OCID to use for all components.
 
     ```bash
-    user_ocid = null
+    ocir_puller_user_ocid = "<your user>"
+    osb_user_ocid = "<your user>"
     ```
 
     This will create a new API Key and Auth Token on your user, so you need to have less than 3 API keys and less than 2 Auth Token on your user already or it will fail.
 
-    You can also pass an Auth Token with the `auth_token` variable. It must be associated with the user_ocid.
+    You can also pass an Auth Token with the `ocir_puller_auth_token` variable. It must be associated with the user_ocid.
 
 ### 3) Deploy the infrastructure
 

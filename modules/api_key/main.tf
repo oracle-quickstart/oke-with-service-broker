@@ -9,7 +9,7 @@ resource "tls_private_key" "private_key" {
 
 resource "local_file" "private_key_file" {
   count = var.generate_api_key ? 1 : 0
-  filename          = "./${var.user_name}_rsa_private_key.pem"
+  filename          = "./${replace(var.user_name, "/", "-")}_rsa_private_key.pem"
   sensitive_content = tls_private_key.private_key[0].private_key_pem
 }
 

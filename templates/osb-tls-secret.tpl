@@ -17,7 +17,12 @@ openssl pkcs12 -inkey key.pem -in certificate.pem -export -out certificate.p12 -
 kubectl create secret generic osb-client-tls-cert --from-literal=keyStore.password=$PASSWORD --from-file=keyStore=certificate.p12 -n oci-service-broker
 
 # encode the cert to base64
-CA_BUNDLE=$(cat certificate.pem | base64)
+OPTION=""
+if [[ "$(uname)" = "Linux" ]]; then
+    OPTION=" -w 0"
+fi
+
+CA_BUNDLE=$(cat certificate.pem | base64 $OPTION)
 popd
 popd
 # inject the caBundle parameter in the ClusterBinding template.

@@ -22,7 +22,7 @@ ocir_puller_group_ocid = null
 
 # If you do not have permission to create users, provide the user_ocid of a user 
 # that has permission to create Autonomous Database, Object Storage buckets and Streams
-ocir_puller_user_ocid        = null
+osb_user_ocid        = null
 
 # If you have permission to create users, and a group already exists with policies to pull images from OCI Registry, you can provide the group_ocid 
 # and a new user will be created and be made a member of this group

@@ -1,3 +1,5 @@
+Note: oci-service-broker has been deprecated.
+
 # oke-with-service-broker
 
 This reference architecture creates an Oracle Kubernetes Engine cluster with a node pool with 3 nodes, and deploys the OCI Service Broker following recommended best practices.

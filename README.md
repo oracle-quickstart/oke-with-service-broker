@@ -5,6 +5,8 @@ Note: oci-service-broker has been deprecated.
 
 The Kubernetes Service Catalog which Oracle Service Broker depends on, has also been deprecated, so we highly recommend you use OSOK.
 
+This Project only support Kubernetes up to v1.21.5. The deprecated Service Catalog does not work on v1.22+
+
 ------------------------------------------
 
 # oke-with-service-broker

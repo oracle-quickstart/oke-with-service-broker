@@ -16,10 +16,10 @@ variable "oke_cluster" {
 variable "cluster_lb_subnet_ids" {}
 
 variable "cluster_options_add_ons_is_kubernetes_dashboard_enabled" {
-  default = true
+  default = false
 }
 variable "cluster_options_add_ons_is_tiller_enabled" {
-  default = true
+  default = false
 }
 variable "secrets_encryption_key_ocid" {
   default = null

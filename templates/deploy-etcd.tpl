@@ -1,9 +1,9 @@
 ## Copyright © 2021, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
-helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add bitnami https://charts.bitnami.com/bitnami --force-update
 
-CHART_VERSION=5.4.2
+CHART_VERSION=8.5.4
 
 # check that the nodes are ready, and we have 3, or PVCs may fail to provision
 
@@ -12,8 +12,8 @@ while [[ $(for i in $(kubectl get nodes -o 'jsonpath={..status.conditions[?(@.ty
 done
 
 helm install etcd bitnami/etcd --version $CHART_VERSION --namespace oci-service-broker \
-    --set statefulset.replicaCount=3 \
-    --set auth.rbac.enabled=false \
+    --set replicaCount=3 \
+    --set auth.rbac.create=false \
     --set auth.client.secureTransport=true \
     --set auth.client.enableAuthentication=true \
     --set auth.client.existingSecret=etcd-peer-tls-cert \

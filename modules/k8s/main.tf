@@ -7,6 +7,7 @@ resource "oci_identity_dynamic_group" "cluster_dynamic_group" {
     #Required
     compartment_id = var.tenancy_ocid
     description = "OKE Clusters"
+    # should change to resource.id = 
     matching_rule = "ALL {resource.type = 'cluster', resource.compartment.id = '${var.compartment_ocid}'}"
     name = "oke_${md5(var.compartment_ocid)}"
 }

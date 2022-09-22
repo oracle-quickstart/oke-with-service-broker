@@ -1,5 +1,12 @@
 Note: oci-service-broker has been deprecated.
 
+# !!! NOTICE: The Oracle Service Broker is being replaced by the Oracle Service Operator for Kubernetes (OSOK).
+[https://github.com/oracle/oci-service-operator](https://github.com/oracle/oci-service-operator)
+
+The Kubernetes Service Catalog which Oracle Service Broker depends on, has also been deprecated, so we highly recommend you use OSOK.
+
+------------------------------------------
+
 # oke-with-service-broker
 
 This reference architecture creates an Oracle Kubernetes Engine cluster with a node pool with 3 nodes, and deploys the OCI Service Broker following recommended best practices.

@@ -5,7 +5,7 @@ output key {
   value = var.generate_api_key ? {
     name = var.user_name
     user_ocid = var.user_ocid
-    private_key_path = local_file.private_key_file[0].filename
+    private_key_path = local_sensitive_file.private_key_file[0].filename
     fingerprint = oci_identity_api_key.api_key[0].fingerprint
   } : {}
 }

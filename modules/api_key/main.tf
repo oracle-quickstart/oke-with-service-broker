@@ -7,10 +7,10 @@ resource "tls_private_key" "private_key" {
   rsa_bits  = 2048
 }
 
-resource "local_file" "private_key_file" {
+resource "local_sensitive_file" "private_key_file" {
   count = var.generate_api_key ? 1 : 0
   filename          = "./${replace(var.user_name, "/", "-")}_rsa_private_key.pem"
-  local_sensitive_file = tls_private_key.private_key[0].private_key_pem
+  content = tls_private_key.private_key[0].private_key_pem
 }
 
 resource "oci_identity_api_key" "api_key" {
